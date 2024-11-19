@@ -17,6 +17,11 @@ func printUsage() {
 	fmt.Println(printCommand("help", "Print usage/help", 2))
 }
 
-func main() {
+func printUsageWithMessage(message string) {
+	fmt.Println(formatWithRed(message))
 	printUsage()
+}
+
+func main() {
+	printUsageWithMessage("Error: invalid command 'ad'")
 }
