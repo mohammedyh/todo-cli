@@ -6,7 +6,7 @@ import (
 
 func printUsage() {
 	fmt.Println("")
-	fmt.Println(colorizeOutput("Usage: todo <command> [arguments]"))
+	fmt.Println(formatWithCyan("Usage: todo <command> [arguments]"))
 	fmt.Println("\nCommands:")
 	fmt.Println(printCommand("add", "Add a todo", 2))
 	fmt.Println(printCommand("edit", "Edit a todo", 2))
