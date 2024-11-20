@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -22,4 +24,14 @@ func formatWithRed(message string) string {
 func printCommand(name, description string, indentAmount int) string {
 	indent := strings.Repeat("\t", indentAmount)
 	return fmt.Sprintf("  %v%v%v", formatWithCyan(name), indent, description)
+}
+
+func printSliceToJSON(slice Todos) {
+	sliceJSON, err := json.MarshalIndent(slice, "", "  ")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(sliceJSON))
 }

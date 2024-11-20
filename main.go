@@ -23,5 +23,11 @@ func printUsageWithMessage(message string) {
 }
 
 func main() {
-	printUsageWithMessage("Error: invalid command 'ad'")
+	todos := Todos{}
+
+	todos.Add("Write CLI app")
+	todos.Add("Fix all GitHub issues")
+	todos.Add("Go for a walk")
+
+	printSliceToJSON(todos)
 }
