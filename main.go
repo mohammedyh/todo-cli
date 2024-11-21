@@ -2,6 +2,19 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strings"
+)
+
+// TODO: put in separate file with cyan and red ANSI colors
+const (
+	AddCommand        = "add"
+	EditCommand       = "edit"
+	DeleteCommand     = "delete"
+	ListCommand       = "list"
+	CompleteCommand   = "complete"
+	IncompleteCommand = "incomplete"
+	HelpCommand       = "help"
 )
 
 func printUsage() {
@@ -20,6 +33,7 @@ func printUsage() {
 func printUsageWithMessage(message string) {
 	fmt.Println(formatWithRed(message))
 	printUsage()
+	os.Exit(1)
 }
 
 func main() {
@@ -29,5 +43,27 @@ func main() {
 	todos.Add("Fix all GitHub issues")
 	todos.Add("Go for a walk")
 
-	printSliceToJSON(todos)
+	if len(os.Args) < 2 {
+		printUsageWithMessage("No subcommands provided")
+	}
+
+	switch os.Args[1] {
+	case AddCommand:
+		todos.Add(strings.Join(os.Args[2:], " "))
+	case EditCommand:
+		fmt.Println("edit command")
+	case DeleteCommand:
+		fmt.Println("delete command")
+	case ListCommand:
+		fmt.Println("list command")
+	case CompleteCommand:
+		fmt.Println("complete command")
+	case IncompleteCommand:
+		fmt.Println("incomplete command")
+	case HelpCommand:
+		printUsage()
+	default:
+		message := fmt.Sprintf("Invalid subcommand '%v'", os.Args[1])
+		printUsageWithMessage(message)
+	}
 }
