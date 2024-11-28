@@ -6,17 +6,6 @@ import (
 	"strings"
 )
 
-// TODO: put in separate file with cyan and red ANSI colors
-const (
-	AddCommand        = "add"
-	EditCommand       = "edit"
-	DeleteCommand     = "delete"
-	ListCommand       = "list"
-	CompleteCommand   = "complete"
-	IncompleteCommand = "incomplete"
-	HelpCommand       = "help"
-)
-
 func printUsage() {
 	fmt.Println("")
 	fmt.Println(formatWithCyan("Usage: todo <command> [arguments]"))
