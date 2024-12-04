@@ -44,7 +44,7 @@ func main() {
 	case DeleteCommand:
 		fmt.Println("delete command")
 	case ListCommand:
-		fmt.Println("list command")
+		renderTodosTable(todos)
 	case CompleteCommand:
 		fmt.Println("complete command")
 	case IncompleteCommand:
