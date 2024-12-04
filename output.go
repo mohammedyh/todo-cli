@@ -25,6 +25,11 @@ func printCommand(name, description string, indentAmount int) string {
 	return fmt.Sprintf("  %v%v%v", formatWithCyan(name), indent, description)
 }
 
+func printErrorMessageFatal(message string) {
+	fmt.Println(formatWithRed(message))
+	os.Exit(1)
+}
+
 func printSliceToJSON(slice Todos) {
 	sliceJSON, err := json.MarshalIndent(slice, "", "  ")
 
