@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"strings"
 	"time"
 )
 
@@ -22,4 +24,17 @@ func (todos *Todos) Add(name string) {
 		CompletedAt: nil,
 		CreatedAt:   time.Now(),
 	})
+}
+
+func (todos *Todos) Edit(id int, name string) {
+	if id > len(*todos)-1 {
+		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
+		printErrorMessageFatal(message)
+	}
+
+	if len(strings.TrimSpace(name)) == 0 {
+		printErrorMessageFatal("New todo name is invalid or empty")
+	}
+
+	(*todos)[id].Name = name
 }

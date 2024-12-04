@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -26,6 +27,7 @@ func printUsageWithMessage(message string) {
 }
 
 func main() {
+	// TODO: Load todos from JSON file if exists
 	todos := Todos{}
 
 	todos.Add("Write CLI app")
@@ -38,16 +40,31 @@ func main() {
 
 	switch os.Args[1] {
 	case AddCommand:
+		// accepts args
 		todos.Add(strings.Join(os.Args[2:], " "))
+		fmt.Println(todos)
 	case EditCommand:
-		fmt.Println("edit command")
+		if len(os.Args) < 3 {
+			printErrorMessageFatal("Todo ID not provided")
+		}
+
+		todoId, err := strconv.Atoi(os.Args[2])
+
+		if err != nil {
+			printErrorMessageFatal("Invalid Todo ID")
+		}
+
+		todos.Edit(todoId, strings.Join(os.Args[3:], " "))
 	case DeleteCommand:
+		// accepts args
 		fmt.Println("delete command")
 	case ListCommand:
 		renderTodosTable(todos)
 	case CompleteCommand:
+		// accepts args
 		fmt.Println("complete command")
 	case IncompleteCommand:
+		// accepts args
 		fmt.Println("incomplete command")
 	case HelpCommand:
 		printUsage()
