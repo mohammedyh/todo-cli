@@ -46,15 +46,24 @@ func renderTodosTable(todos Todos) {
 
 	for _, todo := range todos {
 		var completedAt string
+		var completedStatus string
 
 		if todo.CompletedAt == nil {
-			completedAt = "Not done"
+			completedAt = ""
+		} else {
+			completedAt = todo.CompletedAt.Format(time.Stamp)
+		}
+
+		if todo.Completed == true {
+			completedStatus = CHECKMARK
+		} else {
+			completedStatus = CROSSMARK
 		}
 
 		data = append(data, []string{
-			strconv.Itoa(todo.Id),
+			strconv.Itoa(todo.Id - 1),
 			todo.Name,
-			strconv.FormatBool(todo.Completed),
+			completedStatus,
 			completedAt,
 			todo.CreatedAt.Format(time.Stamp),
 		})

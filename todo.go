@@ -38,3 +38,19 @@ func (todos *Todos) Edit(id int, name string) {
 
 	(*todos)[id].Name = name
 }
+
+func (todos *Todos) Complete(id int) {
+	if id > len(*todos)-1 {
+		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
+		printErrorMessageFatal(message)
+	}
+
+	if (*todos)[id].Completed == true {
+		fmt.Println(formatWithRed("Todo already marked as completed"))
+	}
+
+	now := time.Now()
+
+	(*todos)[id].Completed = true
+	(*todos)[id].CompletedAt = &now
+}

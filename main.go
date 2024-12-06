@@ -40,7 +40,6 @@ func main() {
 
 	switch os.Args[1] {
 	case AddCommand:
-		// accepts args
 		todos.Add(strings.Join(os.Args[2:], " "))
 		fmt.Println(todos)
 	case EditCommand:
@@ -61,8 +60,13 @@ func main() {
 	case ListCommand:
 		renderTodosTable(todos)
 	case CompleteCommand:
-		// accepts args
-		fmt.Println("complete command")
+		todoId, err := strconv.Atoi(os.Args[2])
+
+		if err != nil {
+			printErrorMessageFatal("Invalid Todo ID")
+		}
+
+		todos.Complete(todoId)
 	case IncompleteCommand:
 		// accepts args
 		fmt.Println("incomplete command")
