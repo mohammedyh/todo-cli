@@ -68,8 +68,13 @@ func main() {
 
 		todos.Complete(todoId)
 	case IncompleteCommand:
-		// accepts args
-		fmt.Println("incomplete command")
+		todoId, err := strconv.Atoi(os.Args[2])
+
+		if err != nil {
+			printErrorMessageFatal("Invalid Todo ID")
+		}
+
+		todos.Incomplete(todoId)
 	case HelpCommand:
 		printUsage()
 	default:

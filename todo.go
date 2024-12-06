@@ -46,11 +46,25 @@ func (todos *Todos) Complete(id int) {
 	}
 
 	if (*todos)[id].Completed == true {
-		fmt.Println(formatWithRed("Todo already marked as completed"))
+		fmt.Println(formatWithRed("Todo already marked as complete"))
 	}
 
 	now := time.Now()
 
 	(*todos)[id].Completed = true
 	(*todos)[id].CompletedAt = &now
+}
+
+func (todos *Todos) Incomplete(id int) {
+	if id > len(*todos)-1 {
+		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
+		printErrorMessageFatal(message)
+	}
+
+	if (*todos)[id].Completed == false {
+		fmt.Println(formatWithRed("Todo already marked as incomplete"))
+	}
+
+	(*todos)[id].Completed = false
+	(*todos)[id].CompletedAt = nil
 }
