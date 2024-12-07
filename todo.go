@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 )
@@ -67,4 +68,12 @@ func (todos *Todos) Incomplete(id int) {
 
 	(*todos)[id].Completed = false
 	(*todos)[id].CompletedAt = nil
+}
+
+func (todos *Todos) Delete(index int) {
+	if index > len(*todos)-1 || index < 0 {
+		printErrorMessageFatal("index out of range")
+	}
+
+	*todos = slices.Concat((*todos)[:index], (*todos)[index+1:])
 }

@@ -55,8 +55,17 @@ func main() {
 
 		todos.Edit(todoId, strings.Join(os.Args[3:], " "))
 	case DeleteCommand:
-		// accepts args
-		fmt.Println("delete command")
+		if len(os.Args) < 3 {
+			printErrorMessageFatal("Todo ID not provided")
+		}
+
+		todoId, err := strconv.Atoi(os.Args[2])
+
+		if err != nil {
+			printErrorMessageFatal("Invalid Todo ID")
+		}
+
+		todos.Delete(todoId)
 	case ListCommand:
 		renderTodosTable(todos)
 	case CompleteCommand:
