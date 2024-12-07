@@ -1,12 +1,13 @@
 # todo-cli
 
-A trivial todo cli written in Go
+A trivial todo CLI written in Go
 
 ## Features
 
-- Add todo
-- Edit todo
-- Delete todo
+- Add todos
+- Edit todos names
+- Delete todos
 - List todos
-- Mark todo as complete and incomplete
+- Mark todos as complete and incomplete
+- Timestamp of when todos were created and completed
 - Print CLI help / usage
