@@ -10,13 +10,13 @@ func printUsage() {
 	fmt.Println("")
 	fmt.Println(formatWithCyan("Usage: todo <command> [arguments]"))
 	fmt.Println("\nCommands:")
-	fmt.Println(printCommand("add", "Add a todo", 2))
-	fmt.Println(printCommand("edit", "Edit a todo", 2))
-	fmt.Println(printCommand("delete", "Delete a todo", 1))
-	fmt.Println(printCommand("list", "List all todos", 2))
-	fmt.Println(printCommand("complete", "Mark a todo as complete", 1))
-	fmt.Println(printCommand("incomplete", "Mark a todo as incomplete", 1))
-	fmt.Println(printCommand("help", "Print usage/help", 2))
+	fmt.Println(printCommand("add\t\t<name>", "Add a todo", 2))
+	fmt.Println(printCommand("edit\t\t<id> <new-name>", "Edit a todo name", 1))
+	fmt.Println(printCommand("delete\t<id>", "Delete a todo", 2))
+	fmt.Println(printCommand("list", "List all todos", 4))
+	fmt.Println(printCommand("complete\t<id>", "Mark a todo as complete", 2))
+	fmt.Println(printCommand("incomplete\t<id>", "Mark a todo as incomplete", 2))
+	fmt.Println(printCommand("help", "Print usage/help", 4))
 }
 
 func printUsageWithMessage(message string) {
