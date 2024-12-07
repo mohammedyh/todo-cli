@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"slices"
-	"strings"
 	"time"
 )
 
@@ -18,6 +17,8 @@ type Todo struct {
 type Todos []Todo
 
 func (todos *Todos) Add(name string) {
+	validateTodoName(name)
+
 	*todos = append(*todos, Todo{
 		Id:          len(*todos) + 1,
 		Name:        name,
@@ -33,10 +34,7 @@ func (todos *Todos) Edit(id int, name string) {
 		printErrorMessageFatal(message)
 	}
 
-	if len(strings.TrimSpace(name)) == 0 {
-		printErrorMessageFatal("New todo name is invalid or empty")
-	}
-
+	validateTodoName(name)
 	(*todos)[id].Name = name
 }
 

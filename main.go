@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -41,49 +40,25 @@ func main() {
 	switch os.Args[1] {
 	case AddCommand:
 		todos.Add(strings.Join(os.Args[2:], " "))
-		fmt.Println(todos)
+		renderTodosTable(todos)
 	case EditCommand:
-		if len(os.Args) < 3 {
-			printErrorMessageFatal("Todo ID not provided")
-		}
-
-		todoId, err := strconv.Atoi(os.Args[2])
-
-		if err != nil {
-			printErrorMessageFatal("Invalid Todo ID")
-		}
-
+		todoId := validateArgs(os.Args, 3)
 		todos.Edit(todoId, strings.Join(os.Args[3:], " "))
+		renderTodosTable(todos)
 	case DeleteCommand:
-		if len(os.Args) < 3 {
-			printErrorMessageFatal("Todo ID not provided")
-		}
-
-		todoId, err := strconv.Atoi(os.Args[2])
-
-		if err != nil {
-			printErrorMessageFatal("Invalid Todo ID")
-		}
-
+		todoId := validateArgs(os.Args, 3)
 		todos.Delete(todoId)
+		renderTodosTable(todos)
 	case ListCommand:
 		renderTodosTable(todos)
 	case CompleteCommand:
-		todoId, err := strconv.Atoi(os.Args[2])
-
-		if err != nil {
-			printErrorMessageFatal("Invalid Todo ID")
-		}
-
+		todoId := validateArgs(os.Args, 3)
 		todos.Complete(todoId)
+		renderTodosTable(todos)
 	case IncompleteCommand:
-		todoId, err := strconv.Atoi(os.Args[2])
-
-		if err != nil {
-			printErrorMessageFatal("Invalid Todo ID")
-		}
-
+		todoId := validateArgs(os.Args, 3)
 		todos.Incomplete(todoId)
+		renderTodosTable(todos)
 	case HelpCommand:
 		printUsage()
 	default:

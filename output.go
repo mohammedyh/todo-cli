@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -28,16 +26,6 @@ func printCommand(name, description string, indentAmount int) string {
 func printErrorMessageFatal(message string) {
 	fmt.Println(formatWithRed(message))
 	os.Exit(1)
-}
-
-func printSliceToJSON(slice Todos) {
-	sliceJSON, err := json.MarshalIndent(slice, "", "  ")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(string(sliceJSON))
 }
 
 func renderTodosTable(todos Todos) {
