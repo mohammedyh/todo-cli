@@ -18,9 +18,8 @@ func formatWithRed(message string) string {
 	return fmt.Sprintf("%v%v%v", RED, message, NOCOLOR)
 }
 
-func printCommand(name, description string, indentAmount int) string {
-	indent := strings.Repeat("\t", indentAmount)
-	return fmt.Sprintf("  %v%v%v", formatWithCyan(name), indent, description)
+func printCommand(name string, args []string, description string) string {
+	return fmt.Sprintf("  %-23v%-17v%v", formatWithCyan(name), strings.Join(args, " "), description)
 }
 
 func printErrorMessageFatal(message string) {
