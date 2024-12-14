@@ -6,6 +6,16 @@ import (
 	"strings"
 )
 
+const (
+	AddCommand        = "add"
+	EditCommand       = "edit"
+	DeleteCommand     = "delete"
+	ListCommand       = "list"
+	CompleteCommand   = "complete"
+	IncompleteCommand = "incomplete"
+	HelpCommand       = "help"
+)
+
 func printUsage() {
 	fmt.Println("")
 	fmt.Println(formatWithCyan("Usage: todo <command> [arguments]"))
@@ -26,7 +36,12 @@ func printUsageWithMessage(message string) {
 }
 
 func main() {
-	// TODO: Load todos from JSON file if exists
+	// TODO:
+	// check if $HOME/todo-cli/todos.json exists, if not,
+	// create the file, if it does exist load todos from JSON file
+	// Use json struct tags to serialise and deserialise
+	// Update todos.json after each command
+
 	todos := Todos{}
 
 	todos.Add("Write CLI app")
