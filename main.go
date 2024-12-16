@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -36,11 +39,32 @@ func printUsageWithMessage(message string) {
 }
 
 func main() {
-	// TODO:
-	// check if $HOME/todo-cli/todos.json exists, if not,
-	// create the file, if it does exist load todos from JSON file
-	// Use json struct tags to serialise and deserialise
-	// Update todos.json after each command
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		printErrorMessageFatal("Couldn't get home directory")
+	}
+
+	todosStorePath := filepath.Join(homedir, "todo-cli", "todos.json")
+	todosStoreDir := filepath.Dir(todosStorePath)
+
+	if _, err = os.Stat(todosStorePath); err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			err := os.MkdirAll(todosStoreDir, 0755)
+			if err != nil {
+				printErrorMessageFatal("Couldn't create todo-cli directory")
+			}
+
+			file, err := os.OpenFile(todosStorePath, os.O_RDWR|os.O_CREATE, 0644)
+			if err != nil {
+				printErrorMessageFatal("Couldn't create todos.json")
+			}
+			defer file.Close()
+
+			fmt.Printf("Created todos store at %v\n\n", todosStorePath)
+		} else {
+			printErrorMessageFatal(err.Error())
+		}
+	}
 
 	todos := Todos{}
 

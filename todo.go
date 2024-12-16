@@ -1,17 +1,21 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"slices"
 	"time"
 )
 
+// change Id to type uint and convert where needed
 type Todo struct {
-	Id          int
-	Name        string
-	Completed   bool
-	CompletedAt *time.Time
-	CreatedAt   time.Time
+	Id          int        `json:"id"`
+	Name        string     `json:"name"`
+	Completed   bool       `json:"completed"`
+	CompletedAt *time.Time `json:"completedAt"`
+	CreatedAt   time.Time  `json:"createdAt"`
 }
 
 type Todos []Todo
@@ -74,4 +78,40 @@ func (todos *Todos) Delete(index int) {
 	}
 
 	*todos = slices.Concat((*todos)[:index], (*todos)[index+1:])
+}
+
+func (todos *Todos) Load() {
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		printErrorMessageFatal("Couldn't get home directory")
+	}
+
+	todosStorePath := filepath.Join(homedir, "todo-cli", "todos.json")
+	data, err := os.ReadFile(todosStorePath)
+	if err != nil {
+		printErrorMessageFatal(err.Error())
+	}
+
+	err = json.Unmarshal(data, todos)
+	if err != nil {
+		printErrorMessageFatal(err.Error())
+	}
+}
+
+func (todos *Todos) Save() {
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		printErrorMessageFatal("Couldn't get home directory")
+	}
+
+	todosStorePath := filepath.Join(homedir, "todo-cli", "todos.json")
+	todosJson, err := json.MarshalIndent(todos, "", "  ")
+	if err != nil {
+		printErrorMessageFatal(err.Error())
+	}
+
+	err = os.WriteFile(todosStorePath, todosJson, os.FileMode(os.O_RDWR))
+	if err != nil {
+		printErrorMessageFatal(err.Error())
+	}
 }
