@@ -80,22 +80,24 @@ func (todos *Todos) Delete(index int) {
 	*todos = slices.Concat((*todos)[:index], (*todos)[index+1:])
 }
 
-func (todos *Todos) Load() {
+func (todos *Todos) Load() error {
 	homedir, err := os.UserHomeDir()
 	if err != nil {
-		printErrorMessageFatal("Couldn't get home directory")
+		return err
 	}
 
 	todosStorePath := filepath.Join(homedir, "todo-cli", "todos.json")
 	data, err := os.ReadFile(todosStorePath)
 	if err != nil {
-		printErrorMessageFatal(err.Error())
+		return err
 	}
 
 	err = json.Unmarshal(data, todos)
 	if err != nil {
-		printErrorMessageFatal(err.Error())
+		return err
 	}
+
+	return nil
 }
 
 func (todos *Todos) Save() {

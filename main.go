@@ -66,11 +66,12 @@ func main() {
 		}
 	}
 
-	todos := Todos{}
+	var todos Todos
 
-	todos.Add("Write CLI app")
-	todos.Add("Fix all GitHub issues")
-	todos.Add("Go for a walk")
+	err = todos.Load()
+	if err != nil {
+		todos = Todos{}
+	}
 
 	if len(os.Args) < 2 {
 		printUsageWithMessage("No subcommands provided")
@@ -99,4 +100,5 @@ func main() {
 		message := fmt.Sprintf("Invalid subcommand '%v'", os.Args[1])
 		printUsageWithMessage(message)
 	}
+	todos.Save()
 }
