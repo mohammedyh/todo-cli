@@ -35,7 +35,7 @@ func printErrorMessageFatal(message string) {
 	os.Exit(1)
 }
 
-func printTodoNotExistFatal(id int) {
+func printTodoNotExistFatal(id uint) {
 	message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
 	printErrorMessageFatal(message)
 }
@@ -61,7 +61,7 @@ func renderTodosTable(todos Todos) {
 		}
 
 		data = append(data, []string{
-			strconv.Itoa(todo.Id),
+			strconv.Itoa(int(todo.Id)),
 			todo.Name,
 			completedStatus,
 			completedAt,

@@ -9,9 +9,8 @@ import (
 	"time"
 )
 
-// change Id to type uint and convert where needed
 type Todo struct {
-	Id          int        `json:"id"`
+	Id          uint       `json:"id"`
 	Name        string     `json:"name"`
 	Completed   bool       `json:"completed"`
 	CompletedAt *time.Time `json:"completedAt"`
@@ -20,7 +19,7 @@ type Todo struct {
 
 type Todos []Todo
 
-var nextId int
+var nextId uint
 
 func (todos *Todos) Add(name string) {
 	validateTodoName(name)
@@ -40,7 +39,7 @@ func (todos *Todos) Add(name string) {
 	})
 }
 
-func (todos *Todos) Edit(id int, name string) {
+func (todos *Todos) Edit(id uint, name string) {
 	todoIndex := todos.findById(id)
 	if todoIndex == -1 {
 		printTodoNotExistFatal(id)
@@ -50,7 +49,7 @@ func (todos *Todos) Edit(id int, name string) {
 	(*todos)[todoIndex].Name = name
 }
 
-func (todos *Todos) Complete(id int) {
+func (todos *Todos) Complete(id uint) {
 	todoIndex := todos.findById(id)
 	if todoIndex == -1 {
 		printTodoNotExistFatal(id)
@@ -66,7 +65,7 @@ func (todos *Todos) Complete(id int) {
 	(*todos)[todoIndex].CompletedAt = &now
 }
 
-func (todos *Todos) Incomplete(id int) {
+func (todos *Todos) Incomplete(id uint) {
 	todoIndex := todos.findById(id)
 	if todoIndex == -1 {
 		printTodoNotExistFatal(id)
@@ -95,10 +94,13 @@ func (todos *Todos) ClearCompleted() {
 }
 
 func (todos *Todos) ClearAll() {
+	if len(*todos) == 0 {
+		printErrorMessageFatal("No todos to clear")
+	}
 	*todos = (*todos)[:0]
 }
 
-func (todos *Todos) Delete(id int) {
+func (todos *Todos) Delete(id uint) {
 	todoIndex := todos.findById(id)
 	if todoIndex == -1 {
 		printTodoNotExistFatal(id)
@@ -144,7 +146,7 @@ func (todos *Todos) Save() {
 	}
 }
 
-func (todos *Todos) findById(id int) int {
+func (todos *Todos) findById(id uint) int {
 	return slices.IndexFunc(*todos, func(todo Todo) bool {
 		return todo.Id == id
 	})

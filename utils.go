@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func validateArgs(args []string, requiredArgsLength int) int {
+func validateArgs(args []string, requiredArgsLength int) uint {
 	if len(args) < requiredArgsLength {
 		printErrorMessageFatal("Not enough arguments provided")
 	}
@@ -16,7 +16,7 @@ func validateArgs(args []string, requiredArgsLength int) int {
 		printErrorMessageFatal("Invalid Todo ID")
 	}
 
-	return todoId
+	return uint(todoId)
 }
 
 func validateTodoName(name string) {
