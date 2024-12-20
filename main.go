@@ -10,13 +10,15 @@ import (
 )
 
 const (
-	AddCommand        = "add"
-	EditCommand       = "edit"
-	DeleteCommand     = "delete"
-	ListCommand       = "list"
-	CompleteCommand   = "complete"
-	IncompleteCommand = "incomplete"
-	HelpCommand       = "help"
+	AddCommand            = "add"
+	EditCommand           = "edit"
+	DeleteCommand         = "delete"
+	ListCommand           = "list"
+	CompleteCommand       = "complete"
+	IncompleteCommand     = "incomplete"
+	ClearCompletedCommand = "clear-completed"
+	ClearAllCommand       = "clear-all"
+	HelpCommand           = "help"
 )
 
 func printUsage() {
@@ -29,6 +31,8 @@ func printUsage() {
 	fmt.Println(printCommand("list", []string{}, "List all todos"))
 	fmt.Println(printCommand("complete", []string{"[id]"}, "Mark a todo as complete"))
 	fmt.Println(printCommand("incomplete", []string{"[id]"}, "Mark a todo as incomplete"))
+	fmt.Println(printCommand("clear-completed", []string{}, "Clear all completed todos"))
+	fmt.Println(printCommand("clear-all", []string{}, "Clear all todos"))
 	fmt.Println(printCommand("help", []string{}, "Print usage/help"))
 }
 
@@ -91,6 +95,10 @@ func main() {
 	case CompleteCommand:
 		todoId := validateArgs(os.Args, 3)
 		todos.Complete(todoId)
+	case ClearCompletedCommand:
+		todos.ClearCompleted()
+	case ClearAllCommand:
+		todos.ClearAll()
 	case IncompleteCommand:
 		todoId := validateArgs(os.Args, 3)
 		todos.Incomplete(todoId)

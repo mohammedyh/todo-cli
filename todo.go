@@ -80,6 +80,24 @@ func (todos *Todos) Incomplete(id int) {
 	(*todos)[todoIndex].CompletedAt = nil
 }
 
+func (todos *Todos) ClearCompleted() {
+	var completedCount int
+	for _, todo := range *todos {
+		if todo.Completed {
+			completedCount++
+			todos.Delete(todo.Id)
+		}
+	}
+
+	if completedCount == 0 {
+		fmt.Println(formatWithRed("No more completed todos to clear"))
+	}
+}
+
+func (todos *Todos) ClearAll() {
+	*todos = (*todos)[:0]
+}
+
 func (todos *Todos) Delete(id int) {
 	todoIndex := todos.findById(id)
 	if todoIndex == -1 {

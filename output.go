@@ -27,7 +27,7 @@ func formatWithRed(message string) string {
 }
 
 func printCommand(name string, args []string, description string) string {
-	return fmt.Sprintf("  %-23v%-17v%v", formatWithCyan(name), strings.Join(args, " "), description)
+	return fmt.Sprintf("  %-28v%-17v%v", formatWithCyan(name), strings.Join(args, " "), description)
 }
 
 func printErrorMessageFatal(message string) {
