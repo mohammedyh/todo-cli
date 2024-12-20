@@ -20,11 +20,19 @@ type Todo struct {
 
 type Todos []Todo
 
+var nextId int
+
 func (todos *Todos) Add(name string) {
 	validateTodoName(name)
 
+	if len(*todos) == 0 {
+		nextId = 0
+	} else {
+		nextId = (*todos)[len(*todos)-1].Id + 1
+	}
+
 	*todos = append(*todos, Todo{
-		Id:          len(*todos) + 1,
+		Id:          nextId,
 		Name:        name,
 		Completed:   false,
 		CompletedAt: nil,
@@ -33,51 +41,52 @@ func (todos *Todos) Add(name string) {
 }
 
 func (todos *Todos) Edit(id int, name string) {
-	if id > len(*todos)-1 {
-		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
-		printErrorMessageFatal(message)
+	todoIndex := todos.findById(id)
+	if todoIndex == -1 {
+		printTodoNotExistFatal(id)
 	}
 
 	validateTodoName(name)
-	(*todos)[id].Name = name
+	(*todos)[todoIndex].Name = name
 }
 
 func (todos *Todos) Complete(id int) {
-	if id > len(*todos)-1 {
-		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
-		printErrorMessageFatal(message)
+	todoIndex := todos.findById(id)
+	if todoIndex == -1 {
+		printTodoNotExistFatal(id)
 	}
 
-	if (*todos)[id].Completed == true {
+	if (*todos)[todoIndex].Completed == true {
 		fmt.Println(formatWithRed("Todo already marked as complete"))
 	}
 
 	now := time.Now()
 
-	(*todos)[id].Completed = true
-	(*todos)[id].CompletedAt = &now
+	(*todos)[todoIndex].Completed = true
+	(*todos)[todoIndex].CompletedAt = &now
 }
 
 func (todos *Todos) Incomplete(id int) {
-	if id > len(*todos)-1 {
-		message := fmt.Sprintf("Todo with ID %v doesn't exist", id)
-		printErrorMessageFatal(message)
+	todoIndex := todos.findById(id)
+	if todoIndex == -1 {
+		printTodoNotExistFatal(id)
 	}
 
-	if (*todos)[id].Completed == false {
+	if (*todos)[todoIndex].Completed == false {
 		fmt.Println(formatWithRed("Todo already marked as incomplete"))
 	}
 
-	(*todos)[id].Completed = false
-	(*todos)[id].CompletedAt = nil
+	(*todos)[todoIndex].Completed = false
+	(*todos)[todoIndex].CompletedAt = nil
 }
 
-func (todos *Todos) Delete(index int) {
-	if index > len(*todos)-1 || index < 0 {
-		printErrorMessageFatal("index out of range")
+func (todos *Todos) Delete(id int) {
+	todoIndex := todos.findById(id)
+	if todoIndex == -1 {
+		printTodoNotExistFatal(id)
 	}
 
-	*todos = slices.Concat((*todos)[:index], (*todos)[index+1:])
+	*todos = slices.Concat((*todos)[:todoIndex], (*todos)[todoIndex+1:])
 }
 
 func (todos *Todos) Load() error {
@@ -96,7 +105,6 @@ func (todos *Todos) Load() error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -116,4 +124,10 @@ func (todos *Todos) Save() {
 	if err != nil {
 		printErrorMessageFatal(err.Error())
 	}
+}
+
+func (todos *Todos) findById(id int) int {
+	return slices.IndexFunc(*todos, func(todo Todo) bool {
+		return todo.Id == id
+	})
 }
